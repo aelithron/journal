@@ -1,9 +1,9 @@
-import { faCalendar } from "@fortawesome/free-regular-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { Metadata } from "next"
-import Link from "next/link"
-import { ClientDate } from "../(ui)/clientutils.module"
-import { faPlus } from "@fortawesome/free-solid-svg-icons"
+import { faCalendar } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Metadata } from "next";
+import Link from "next/link";
+import { ClientDate } from "../(ui)/clientutils.module";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 export const metadata: Metadata = { title: "Home" }
 export default function Page() {
@@ -17,5 +17,5 @@ export default function Page() {
         <Link href={"/create"} className="bg-violet-500 p-1 px-2 rounded-lg hover:text-sky-500"><FontAwesomeIcon icon={faPlus} /> New Entry</Link>
       </div>
     </main>
-  )
+  );
 }
