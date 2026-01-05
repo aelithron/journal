@@ -21,7 +21,5 @@ export function CreateEntry() {
     }
     router.push(`/edit/${(body as JournalCreateRes).id}`);
   }
-  return (
-    <button onClick={createEntry} className="bg-violet-500 p-1 px-2 rounded-lg hover:text-sky-500"><FontAwesomeIcon icon={faPlus} /> New Entry</button>
-  )
+  return <button onClick={createEntry} className="bg-violet-500 p-1 px-2 rounded-lg hover:text-sky-500"><FontAwesomeIcon icon={faPlus} /> New Entry</button>
 }

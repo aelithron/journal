@@ -5,7 +5,6 @@ import { journalTable } from "@/utils/schema";
 import { NextAuthRequest } from "next-auth";
 import { NextResponse } from "next/server";
 
-
 export const POST = auth(async function POST(req: NextAuthRequest): Promise<NextResponse<JournalCreateRes | APIError>> {
   if (!req.auth) return NextResponse.json({ error: "unauthorized", message: "Not logged in, please log in to continue." }, { status: 401 });
   if (!req.auth.user?.email) return NextResponse.json({ error: "invalid_profile", message: "You don't have an email in your profile, try logging back in." }, { status: 400 });
