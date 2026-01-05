@@ -21,7 +21,7 @@ export const POST = auth(async function POST(req: NextAuthRequest): Promise<Next
   if (isNaN(new Date(body.createdAt).getTime())) return NextResponse.json({ error: "invalid_createdat", message: "Your request's 'createdAt' attribute was invalid. Please send a valid date string!" }, { status: 400 });
   let dbRes;
   try {
-    dbRes = await db.insert(journalTable).values({ user: req.auth.user.email, title: body.title, body: body.body, createdAt: new Date(body.createdAt!) }).returning();
+    dbRes = await db.insert(journalTable).values({ user: req.auth.user.email, title: body.title, body: body.body, createdAt: new Date(body.createdAt) }).returning();
   } catch {
     return NextResponse.json({ error: "database_error", message: "Error connecting to the database! Please check your request structure and try again." }, { status: 500 })
   }

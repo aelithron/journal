@@ -9,5 +9,5 @@ export const journalTable = pgTable("journals", {
   user: text().notNull(),
   title: text().notNull(),
   body: text().notNull(),
-  createdAt: timestamp({ mode: "date" }).notNull().defaultNow()
+  createdAt: timestamp({ mode: "date", withTimezone: true }).notNull().defaultNow()
 });

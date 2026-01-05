@@ -7,6 +7,8 @@ import db from "@/utils/db";
 import { journalTable } from "@/utils/schema";
 import { eq } from "drizzle-orm";
 import { CreateEntry } from "./entry.module";
+import Link from "next/link";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 export const metadata: Metadata = { title: "Home" }
 export const dynamic = "force-dynamic";
@@ -29,9 +31,13 @@ export default async function Page() {
           <p>You haven&apos;t created any entries today!</p>
           <CreateEntry />
         </div>}
-        {entries.length >= 1 && entries.map((entry) => <div key={entry.id}>
-          
-        </div>)}
+        {entries.length >= 1 && entries.map((entry) => <Link href={`/edit/${entry.id}`} key={entry.id} className="flex justify-between items-center p-2 bg-slate-300 dark:bg-slate-700 rounded-lg w-full">
+          <div className="flex flex-col">
+            <p className="text-lg">{entry.title === "" ? "New Entry" : entry.title}</p>
+            <p>{entry.body === "" ? "This entry doesn't have any text yet!" : (entry.body.length < 100 ? entry.body : `${entry.body.slice(0, 100)}...`)}</p>
+          </div>
+          <FontAwesomeIcon icon={faArrowRight} size="lg" className="hover:text-sky-500"/>
+        </Link>)}
       </div>
     </main>
   );
