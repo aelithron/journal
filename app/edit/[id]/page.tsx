@@ -1,7 +1,7 @@
 import { auth, signOut } from "@/utils/auth"
 import db from "@/utils/db"
 import { journalTable } from "@/utils/schema"
-import { faHome, faSignOut, faX } from "@fortawesome/free-solid-svg-icons";
+import { faHome, faPencil, faSignOut, faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { and, eq } from "drizzle-orm"
 import Link from "next/link";
@@ -47,7 +47,8 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   );
   return (
     <main className="flex flex-col min-h-screen p-8 md:p-16">
-      <JournalEditor id={entry[0].id} curTitle={entry[0].title} curBody={entry[0].body} />
+      <h1 className="text-2xl font-semibold mb-2"><FontAwesomeIcon icon={faPencil} /> Edit Entry</h1>
+      <JournalEditor id={entry[0].id} curTitle={entry[0].title} curBody={entry[0].body} curCreatedAt={entry[0].createdAt} />
     </main>
   )
 }

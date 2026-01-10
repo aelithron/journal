@@ -1,4 +1,4 @@
-import { APIError, JournalEditReq, JournalEditRes } from "@/journal";
+import { APIError, JournalDeleteRes, JournalEditReq, JournalEditRes } from "@/journal";
 import { auth } from "@/utils/auth";
 import db from "@/utils/db";
 import { journalTable } from "@/utils/schema";
@@ -25,6 +25,19 @@ export const PATCH = auth(async function PATCH(req: NextAuthRequest, { params }:
     const existCheck = await db.select().from(journalTable).where(and(eq(journalTable.id, Number.parseInt((await params).id)), eq(journalTable.user, req.auth.user.email)));
     if (existCheck.length < 1) return NextResponse.json({ error: "not_found", message: "The post you are looking for doesn't exist!" }, { status: 404 });
     await db.update(journalTable).set(updatedData).where(and(eq(journalTable.id, Number.parseInt((await params).id)), eq(journalTable.user, req.auth.user.email)));
+    return NextResponse.json({ success: true });
+  } catch {
+    return NextResponse.json({ error: "database_error", message: "Error connecting to the database! Please check your request structure and try again." }, { status: 500 })
+  }
+});
+export const DELETE = auth(async function DELETE(req: NextAuthRequest, { params }: RouteContext<'/api/journal/[id]'>): Promise<NextResponse<JournalDeleteRes | APIError>> {
+  if (!req.auth) return NextResponse.json({ error: "unauthorized", message: "Not logged in, please log in to continue." }, { status: 401 });
+  if (!req.auth.user?.email) return NextResponse.json({ error: "invalid_profile", message: "You don't have an email in your profile, try logging back in." }, { status: 400 });
+  if (!(await params).id || isNaN(Number.parseInt((await params).id))) return NextResponse.json({ error: "missing_id", message: "Your request's post ID was missing or invalid. Please check your request's URL!" }, { status: 400 });
+  try {
+    const existCheck = await db.select().from(journalTable).where(and(eq(journalTable.id, Number.parseInt((await params).id)), eq(journalTable.user, req.auth.user.email)));
+    if (existCheck.length < 1) return NextResponse.json({ error: "not_found", message: "The post you are looking for doesn't exist!" }, { status: 404 });
+    await db.delete(journalTable).where(and(eq(journalTable.id, Number.parseInt((await params).id)), eq(journalTable.user, req.auth.user.email)));
     return NextResponse.json({ success: true });
   } catch {
     return NextResponse.json({ error: "database_error", message: "Error connecting to the database! Please check your request structure and try again." }, { status: 500 })
