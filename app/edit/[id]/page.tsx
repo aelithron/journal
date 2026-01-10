@@ -5,6 +5,7 @@ import { faHome, faSignOut, faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { and, eq } from "drizzle-orm"
 import Link from "next/link";
+import { JournalEditor } from "./edit.form";
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth();
@@ -46,7 +47,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   );
   return (
     <main className="flex flex-col min-h-screen p-8 md:p-16">
-
+      <JournalEditor id={entry[0].id} curTitle={entry[0].title} curBody={entry[0].body} />
     </main>
   )
 }
