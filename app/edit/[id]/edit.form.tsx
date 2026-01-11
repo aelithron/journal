@@ -1,5 +1,5 @@
 "use client";
-import { APIError, JournalDeleteRes, JournalEditReq, JournalEditRes } from "@/journal";
+import { APIError, APISuccess, JournalEditReq } from "@/journal";
 import { faSave, faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/navigation";
@@ -19,7 +19,7 @@ export function JournalEditor({ id, curTitle, curBody, curCreatedAt }: { id: num
     const res = await fetch(`/api/journal/${id}`, { method: "PATCH", body: JSON.stringify(editBody) });
     let resBody;
     try {
-      resBody = await res.json() as JournalEditRes | APIError;
+      resBody = await res.json() as APISuccess | APIError;
     } catch {
       alert("Error editing entry!");
       return;
@@ -34,7 +34,7 @@ export function JournalEditor({ id, curTitle, curBody, curCreatedAt }: { id: num
     const res = await fetch(`/api/journal/${id}`, { method: "DELETE" });
     let resBody;
     try {
-      resBody = await res.json() as JournalDeleteRes | APIError;
+      resBody = await res.json() as APISuccess | APIError;
     } catch {
       alert("Error deleting entry!");
       return;
@@ -55,15 +55,14 @@ export function JournalEditor({ id, curTitle, curBody, curCreatedAt }: { id: num
         <input type="datetime-local" value={createdAt} onChange={(e) => setCreatedAt(e.target.value)} />
       </div>
       <label htmlFor="body" className="text-lg font-semibold">Entry</label>
-      <textarea id="body" value={body} onChange={(e) => setBody(e.target.value)} rows={6} className="bg-slate-500 border-slate-700 border-2 rounded-lg" />
+      <textarea id="body" value={body} onChange={(e) => setBody(e.target.value)} rows={7} className="bg-slate-500 border-slate-700 border-2 rounded-lg p-1" />
       <div className="flex gap-2 items-center justify-center mt-2">
-        <button type="submit" className="p-1 px-2 bg-purple-500 rounded-lg hover:text-sky-500"><FontAwesomeIcon icon={faSave} /> Save</button>
+        <button type="submit" className="p-1 px-2 bg-violet-500 rounded-lg hover:text-sky-500"><FontAwesomeIcon icon={faSave} /> Save</button>
         <button type="button" className="p-1 px-2 rounded-lg bg-red-600 hover:text-sky-500" onClick={deleteEntry}><FontAwesomeIcon icon={faTrashAlt} /> Delete</button>
       </div>
     </form>
   )
 }
-
 function htmlFormatDate(date: Date): string {
   return new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().slice(0, 16);
 }

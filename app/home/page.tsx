@@ -48,7 +48,7 @@ async function EntryDisplay() {
         <p>You haven&apos;t created any entries today!</p>
         <CreateEntry />
       </div>}
-      {entries.length >= 1 && entries.map((entry) => <Link href={`/edit/${entry.id}`} key={entry.id} className="flex justify-between items-center p-2 bg-slate-300 dark:bg-slate-700 rounded-lg w-full">
+      {entries.length >= 1 && entries.map((entry) => <Link href={`/read/${entry.id}`} key={entry.id} className="flex justify-between items-center p-2 bg-slate-300 dark:bg-slate-700 rounded-lg w-full">
         <div className="flex flex-col">
           <p className="text-lg">{entry.title === "" ? "New Entry" : entry.title}</p>
           <p>{entry.body === "" ? "This entry doesn't have any text yet!" : (entry.body.length < 100 ? entry.body : `${entry.body.slice(0, 100)}...`)}</p>

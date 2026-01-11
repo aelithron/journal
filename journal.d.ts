@@ -1,8 +1,7 @@
 export type APIError = { error: string, message: string }
+export type APISuccess = { success: boolean } // generic success thing so i don't have to repeat myself :3
 
 // /api/journal
-export type JournalCreateReq = { title?: string, body?: string, createdAt?: string }
-export type JournalCreateRes = { id: number }
 export type JournalEditReq = { title?: string, body?: string, createdAt?: string }
-export type JournalEditRes = { success: boolean }
-export type JournalDeleteRes = { success: boolean }
+export type JournalCreateReq = JournalEditReq;
+export type JournalCreateRes = { id: number }
