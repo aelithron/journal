@@ -1,6 +1,6 @@
 import { auth } from "@/utils/auth";
 import { faHome } from "@fortawesome/free-regular-svg-icons";
-import { faPencil } from "@fortawesome/free-solid-svg-icons";
+import { faPencil, faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 
@@ -16,4 +16,13 @@ export async function Header() {
       </div>
     </header>
   );
+}
+export function ErrorDisplay({ children, message }: { children?: React.ReactNode, message: string }) {
+  return (
+    <div className="flex flex-col p-2 bg-red-600 rounded-xl">
+      <h1 className="text-xl"><FontAwesomeIcon icon={faX} /> Error</h1>
+      <p>{message}</p>
+      {children}
+    </div>
+  ) 
 }

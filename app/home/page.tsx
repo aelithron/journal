@@ -8,7 +8,8 @@ import { journalTable } from "@/utils/schema";
 import { eq } from "drizzle-orm";
 import { CreateEntry } from "./entry.module";
 import Link from "next/link";
-import { faArrowRight, faX } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { ErrorDisplay } from "../(ui)/ui.module";
 
 export const metadata: Metadata = { title: "Home" }
 export const dynamic = "force-dynamic";
@@ -34,12 +35,7 @@ async function EntryDisplay() {
   try {
     allEntries = await db.select().from(journalTable).where(eq(journalTable.user, session?.user?.email as string));
   } catch {
-    return (
-      <div className="flex flex-col p-2 bg-red-600 rounded-xl">
-        <h1 className="text-xl"><FontAwesomeIcon icon={faX} /> Error</h1>
-        <p>Couldn&apos;t connect to the database!</p>
-      </div>
-    );
+    return (<ErrorDisplay message="Couldn't connect to the database!" />);
   }
   const entries = allEntries.filter((entry) => entry.createdAt.toDateString() === new Date().toDateString());
   return (
