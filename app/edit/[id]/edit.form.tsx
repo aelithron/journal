@@ -1,5 +1,5 @@
 "use client";
-import { APIError, JournalDeleteRes, JournalEditRes } from "@/journal";
+import { APIError, JournalDeleteRes, JournalEditReq, JournalEditRes } from "@/journal";
 import { faSave, faTrashAlt } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/navigation";
@@ -12,26 +12,35 @@ export function JournalEditor({ id, curTitle, curBody, curCreatedAt }: { id: num
   const [createdAt, setCreatedAt] = useState<string>(htmlFormatDate(curCreatedAt));
   async function editEntry(e: React.FormEvent) {
     e.preventDefault();
-    const res = await fetch(`/api/journal/${id}`, { method: "PATCH", body: JSON.stringify({  }) });
-    let body;
+    const editBody: JournalEditReq = {};
+    if (curTitle !== title) editBody.title = title;
+    if (curBody !== body) editBody.body = body;
+    if (htmlFormatDate(curCreatedAt) !== createdAt) editBody.createdAt = createdAt;
+    const res = await fetch(`/api/journal/${id}`, { method: "PATCH", body: JSON.stringify(editBody) });
+    let resBody;
     try {
-      body = await res.json() as JournalEditRes | APIError;
+      resBody = await res.json() as JournalEditRes | APIError;
     } catch {
       alert("Error editing entry!");
+      return;
+    }
+    if ((resBody as APIError).error) {
+      alert(`Error creating entry: ${(resBody as APIError).message} (${(resBody as APIError).error})`);
+      return;
     }
   }
   async function deleteEntry() {
     if (!confirm(`Are you sure you want to delete this entry?\nTitle: ${curTitle !== "" ? curTitle : "New Entry"}\nCreated On: ${curCreatedAt.toLocaleString(undefined, { timeStyle: "short", dateStyle: "long" })}`)) return;
     const res = await fetch(`/api/journal/${id}`, { method: "DELETE" });
-    let body;
+    let resBody;
     try {
-      body = await res.json() as JournalDeleteRes | APIError;
+      resBody = await res.json() as JournalDeleteRes | APIError;
     } catch {
       alert("Error deleting entry!");
       return;
     }
-    if ((body as APIError).error) {
-      alert(`Error creating entry: ${(body as APIError).message} (${(body as APIError).error})`);
+    if ((resBody as APIError).error) {
+      alert(`Error creating entry: ${(resBody as APIError).message} (${(resBody as APIError).error})`);
       return;
     }
     router.push("/home");
