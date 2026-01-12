@@ -24,7 +24,7 @@ export default async function Page() {
         </div>
         <CreateEntry />
       </div>
-      <h2 className="text-xl font-semibold mt-2">Your Entries</h2>
+      <h2 className="text-xl font-semibold mt-2">Today&apos;s Entries</h2>
       <EntryDisplay />
     </main>
   );
