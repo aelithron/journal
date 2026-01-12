@@ -7,7 +7,9 @@ import { and, eq } from "drizzle-orm"
 import Link from "next/link";
 import { JournalEditor } from "./edit.form";
 import { ErrorDisplay } from "@/app/(ui)/ui.module";
+import { Metadata } from "next";
 
+export const metadata: Metadata = { title: "Edit Entry" }
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth();
   if (!session?.user?.email) return (

@@ -38,10 +38,10 @@ export default async function Page() {
     );
   }
   return (
-    <main className="flex flex-col min-h-screen p-8 md:p-16">
+    <main className="flex flex-col min-h-screen p-8 md:p-16 gap-2">
       <h1 className="text-3xl font-semibold mb-2"><FontAwesomeIcon icon={faList} /> Your Entries</h1>
       {entries.length < 1 && <div className="flex justify-between gap-4 items-center p-2 bg-slate-300 dark:bg-slate-700 rounded-xl">
-        <p>You haven&apos;t created any entries today!</p>
+        <p>You haven&apos;t created any entries yet!</p>
         <CreateEntry />
       </div>}
       {entries.length >= 1 && entries.map((entry) => <Link href={`/read/${entry.id}`} key={entry.id} className="flex justify-between items-center p-2 bg-slate-300 dark:bg-slate-700 rounded-lg w-full">

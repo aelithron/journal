@@ -7,8 +7,19 @@ import { faClock, faHome } from "@fortawesome/free-regular-svg-icons";
 import { faBookOpen, faPencil, faSignOut } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { and, eq } from "drizzle-orm";
+import { Metadata } from "next";
 import Link from "next/link";
 
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const session = await auth();
+  if (!session?.user?.email) return { title: "Journal Entry" };
+  let entry;
+  try {
+    entry = await db.select().from(journalTable).where(and(eq(journalTable.user, session?.user?.email), eq(journalTable.id, Number.parseInt((await params).id)))).limit(1);
+  } catch { return { title: "Journal Entry" } }
+  if (!entry || entry.length < 1) return { title: "Journal Entry" };
+  return  { title: (entry[0].title !== "" ? entry[0].title : "New Entry") };
+}
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth()
   if (!session?.user?.email) return (
