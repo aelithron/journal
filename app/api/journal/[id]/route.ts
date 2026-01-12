@@ -21,6 +21,7 @@ export const PATCH = auth(async function PATCH(req: NextAuthRequest, { params }:
   if (body.body && body.body.trim().length >= 1) updatedData.body = body.body;
   if (body.createdAt && body.createdAt.trim().length >= 1) updatedData.createdAt = new Date(body.createdAt);
   if (body.createdAt && isNaN(new Date(body.createdAt).getTime())) return NextResponse.json({ error: "invalid_createdat", message: "Your request's 'createdAt' attribute was invalid. Please send a valid date string!" }, { status: 400 });
+  if (JSON.stringify(updatedData) === "{}") return NextResponse.json({ success: true });
   try {
     const existCheck = await db.select().from(journalTable).where(and(eq(journalTable.id, Number.parseInt((await params).id)), eq(journalTable.user, req.auth.user.email)));
     if (existCheck.length < 1) return NextResponse.json({ error: "not_found", message: "The post you are looking for doesn't exist!" }, { status: 404 });
