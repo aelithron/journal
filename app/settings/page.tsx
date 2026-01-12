@@ -1,7 +1,10 @@
 import { auth, signOut } from "@/utils/auth";
 import { faGear, faSignOut } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Metadata } from "next";
 
+export const metadata: Metadata = { title: "Settings" };
+export const dynamic = "force-dynamic";
 export default async function Page() {
   const session = await auth();
   return (

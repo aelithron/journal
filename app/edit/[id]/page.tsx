@@ -45,7 +45,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
     <main className="flex flex-col min-h-screen p-8 md:p-16">
       <Link href={`/read/${(await params).id}`} className="rounded-xl bg-slate-500 p-1 w-fit mb-2 sticky top-0"><FontAwesomeIcon icon={faArrowLeft} /></Link>
       <h1 className="text-2xl font-semibold mb-2"><FontAwesomeIcon icon={faPencil} /> Edit Entry</h1>
-      <JournalEditor id={entry[0].id} curTitle={entry[0].title} curBody={entry[0].body} curCreatedAt={entry[0].createdAt} />
+      <JournalEditor id={entry[0].id} origTitle={entry[0].title} origBody={entry[0].body} origCreatedAt={entry[0].createdAt} />
     </main>
   )
 }

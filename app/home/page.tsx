@@ -47,7 +47,7 @@ async function EntryDisplay() {
       {entries.length >= 1 && entries.map((entry) => <Link href={`/read/${entry.id}`} key={entry.id} className="flex justify-between items-center p-2 bg-slate-300 dark:bg-slate-700 rounded-lg w-full">
         <div className="flex flex-col">
           <div className="flex items-center gap-2">
-            <p className="text-xl font-semibold">{entry.title === "" ? "New Entry" : entry.title}</p>
+            <p className="text-xl font-semibold hover:text-sky-500">{entry.title === "" ? "New Entry" : entry.title}</p>
             <p className="text-slate-500 text-sm"><FontAwesomeIcon icon={faClock} /> <ClientTime date={entry.createdAt} /></p>
           </div>
           <p>{entry.body === "" ? "This entry doesn't have any text yet!" : (entry.body.length < 100 ? entry.body : `${entry.body.slice(0, 100)}...`)}</p>

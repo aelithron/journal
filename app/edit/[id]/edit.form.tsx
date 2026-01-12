@@ -5,17 +5,23 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export function JournalEditor({ id, curTitle, curBody, curCreatedAt }: { id: number, curTitle: string, curBody: string, curCreatedAt: Date }) {
+export function JournalEditor({ id, origTitle, origBody, origCreatedAt }: { id: number, origTitle: string, origBody: string, origCreatedAt: Date }) {
   const router = useRouter();
-  const [title, setTitle] = useState<string>(curTitle);
-  const [body, setBody] = useState<string>(curBody);
-  const [createdAt, setCreatedAt] = useState<string>(htmlFormatDate(curCreatedAt));
+  const [saved, setSaved] = useState<boolean>(true);
+  const [title, setTitle] = useState<string>(origTitle);
+  const [body, setBody] = useState<string>(origBody);
+  const [createdAt, setCreatedAt] = useState<string>(htmlFormatDate(origCreatedAt));
+  // state management mess for autosave
+  // no wayyy is this spaghetti code :3
+  const [curTitle, setCurTitle] = useState<string>(origTitle);
+  const [curBody, setCurBody] = useState<string>(origBody);
+  const [curCreatedAt, setCurCreatedAt] = useState<string>(htmlFormatDate(origCreatedAt));
   async function editEntry(e: React.FormEvent) {
     e.preventDefault();
     const editBody: JournalEditReq = {};
     if (curTitle !== title) editBody.title = title;
     if (curBody !== body) editBody.body = body;
-    if (htmlFormatDate(curCreatedAt) !== createdAt) editBody.createdAt = createdAt;
+    if (curCreatedAt !== createdAt) editBody.createdAt = createdAt;
     const res = await fetch(`/api/journal/${id}`, { method: "PATCH", body: JSON.stringify(editBody) });
     let resBody;
     try {
@@ -30,7 +36,7 @@ export function JournalEditor({ id, curTitle, curBody, curCreatedAt }: { id: num
     }
   }
   async function deleteEntry() {
-    if (!confirm(`Are you sure you want to delete this entry?\nTitle: ${curTitle !== "" ? curTitle : "New Entry"}\nCreated On: ${curCreatedAt.toLocaleString(undefined, { timeStyle: "short", dateStyle: "long" })}`)) return;
+    if (!confirm(`Are you sure you want to delete this entry?\nTitle: ${curTitle !== "" ? curTitle : "New Entry"}\nCreated On: ${new Date(curCreatedAt).toLocaleString(undefined, { timeStyle: "short", dateStyle: "long" })}`)) return;
     const res = await fetch(`/api/journal/${id}`, { method: "DELETE" });
     let resBody;
     try {
